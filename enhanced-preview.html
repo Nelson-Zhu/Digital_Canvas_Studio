@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Canvas Studio</title>
+  <link rel="stylesheet" href="src/enhanced-styles.css">
+  <style>
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-100), var(--secondary-100));
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      z-index: 1;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><path d=%22M10,10 Q50,40 90,10 Q60,50 90,90 Q50,60 10,90 Q40,50 10,10 Z%22 fill=%22none%22 stroke=%22%234285F4%22 stroke-width=%222%22/></svg>');
+      background-size: 300px;
+      animation: bg-slide 60s linear infinite;
+    }
+    
+    @keyframes bg-slide {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 1000px; }
+    }
+    
+    .welcome-message {
+      color: var(--primary-700);
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--space-sm);
+    }
+    
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xxl);
+    }
+    
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-icon {
+      position: absolute;
+      top: var(--space-md);
+      right: var(--space-md);
+      width: 48px;
+      height: 48px;
+      color: var(--primary-400);
+      opacity: 0.5;
+    }
+    
+    .feature-card:hover .feature-icon {
+      color: var(--primary-500);
+      opacity: 0.8;
+      transform: scale(1.1);
+      transition: all var(--transition-medium);
+    }
+    
+    .feature-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .feature-title {
+      font-size: var(--font-size-lg);
+      color: var(--primary-700);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .feature-description {
+      flex: 1;
+      margin-bottom: var(--space-lg);
+    }
+    
+    .music-player {
+      background-color: var(--secondary-100);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .music-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .music-info {
+      flex: 1;
+    }
+    
+    .music-title {
+      font-weight: 600;
+      margin-bottom: var(--space-xxs);
+    }
+    
+    .music-category {
+      color: var(--neutral-700);
+      font-size: var(--font-size-sm);
+    }
+    
+    .time-greeting {
+      color: var(--secondary-600);
+      font-size: var(--font-size-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: var(--space-xs);
+    }
+  </style>
+</head>
+<body>
+  <!-- Include SVG icons -->
+  <div id="svg-icons" style="display: none;"></div>
+  
+  <!-- Accessibility Menu - Fixed Position -->
+  <div class="access-menu" style="position: fixed; top: 20px; right: 20px; z-index: 100;">
+    <button class="btn-icon" id="contrast-toggle" aria-label="Toggle high contrast mode">
+      <svg width="24" height="24" aria-hidden="true">
+        <use href="#icon-contrast"></use>
+      </svg>
+    </button>
+  </div>
+  
+  <div id="app" class="container">
+    <!-- Navigation -->
+    <nav class="nav-container" style="border-radius: var(--border-radius-md); margin-bottom: var(--space-lg);">
+      <div class="nav-logo">Digital Canvas Studio</div>
+      <div class="nav-items">
+        <a href="#" class="nav-item active">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-home"></use>
+          </svg>
+          Home
+        </a>
+        <a href="#" class="nav-item">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-canvas"></use>
+          </svg>
+          Canvas
+        </a>
+        <a href="#" class="nav-item">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-gallery"></use>
+          </svg>
+          Gallery
+        </a>
+      </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+      <!-- Home View -->
+      <div id="home-view">
+        <!-- Hero Section -->
+        <section class="hero-section">
+          <div class="hero-bg"></div>
+          <div class="hero-content">
+            <div class="time-greeting">Good afternoon, Alice</div>
+            <h1>Welcome to Digital Canvas Studio</h1>
+            <p class="welcome-message">Create, explore, and express yourself through art</p>
+            <button class="btn btn-primary btn-large animate-pulse">Start Creating</button>
+          </div>
+        </section>
+        
+        <!-- Music Player -->
+        <div class="music-player">
+          <div class="music-info">
+            <div class="music-title">Calming Piano Melodies</div>
+            <div class="music-category">Recommended for your afternoon session</div>
+          </div>
+          <div class="music-controls">
+            <button class="btn-icon" aria-label="Play music">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-play"></use>
+              </svg>
+            </button>
+            <button class="btn-icon" aria-label="Adjust volume">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-volume"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Feature Cards -->
+        <div class="feature-cards">
+          <div class="card feature-card card-interactive" id="create-art-card">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-canvas"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">Create Art</h3>
+              <p class="feature-description">Express yourself through our specially designed digital canvas with tools that adapt to your needs.</p>
+              <button class="btn btn-primary" id="create-art-btn">Start Creating</button>
+            </div>
+          </div>
+          
+          <div class="card feature-card card-interactive" id="view-gallery-card">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-gallery"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">View Gallery</h3>
+              <p class="feature-description">See your creative journey through time with our beautifully organized gallery view.</p>
+              <button class="btn btn-primary" id="view-gallery-btn">Open Gallery</button>
+            </div>
+          </div>
+          
+          <div class="card feature-card card-interactive" id="guided-mode-card">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-guided"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">Guided Creation</h3>
+              <p class="feature-description">Follow step-by-step guidance to create beautiful art with supportive instruction.</p>
+              <button class="btn btn-primary" id="guided-mode-btn">Try Guided Mode</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <section>
+          <h2>Continue where you left off</h2>
+          
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">May 10</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">May 12</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">May 15</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">Today</div>
+            </div>
+          </div>
+          
+          <div class="gallery-grid" style="margin-top: var(--space-lg);">
+            <div class="gallery-item">
+              <div style="height: 180px; background-color: var(--calm-blue); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Ocean Sunset</div>
+                <div class="gallery-date">Started today</div>
+              </div>
+            </div>
+            
+            <div class="gallery-item">
+              <div style="height: 180px; background-color: var(--nostalgic-cream); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Spring Garden</div>
+                <div class="gallery-date">May 15, 2023</div>
+              </div>
+            </div>
+            
+            <div class="gallery-item">
+              <div style="height: 180px; background-color: var(--energetic-yellow); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Sunny Day</div>
+                <div class="gallery-date">May 12, 2023</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Canvas View (will be shown/hidden via JavaScript) -->
+      <div id="canvas-view" style="display: none;">
+        <div class="breadcrumb">
+          <a href="#" class="breadcrumb-item" id="back-to-home">Home</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item active">Canvas</span>
+        </div>
+        
+        <h2>Create Your Artwork</h2>
+        
+        <!-- Tools and Canvas Container -->
+        <div class="flex gap-lg" style="margin-top: var(--space-lg);">
+          <!-- Tool Palette -->
+          <div class="tool-palette" style="width: 250px;">
+            <div class="tool-category">
+              <div class="tool-category-title">Brushes</div>
+              <div class="tool-options">
+                <button class="tool-option active" data-tool="brush" data-size="5">
+                  <svg width="24" height="24" aria-hidden="true">
+                    <use href="#icon-brush"></use>
+                  </svg>
+                </button>
+                <button class="tool-option" data-tool="brush" data-size="10">
+                  <svg width="32" height="32" aria-hidden="true">
+                    <use href="#icon-brush"></use>
+                  </svg>
+                </button>
+                <button class="tool-option" data-tool="eraser">
+                  <svg width="24" height="24" aria-hidden="true">
+                    <use href="#icon-eraser"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <div class="tool-category">
+              <div class="tool-category-title">Colors</div>
+              <div class="color-category">
+                <div class="color-category-title">Calm</div>
+                <div class="color-category-options">
+                  <button class="color-option active" style="background-color: var(--calm-blue);" data-color="#92C5DE"></button>
+                  <button class="color-option" style="background-color: var(--calm-green);" data-color="#C5E0B4"></button>
+                  <button class="color-option" style="background-color: #A7C7E7;" data-color="#A7C7E7"></button>
+                </div>
+              </div>
+              
+              <div class="color-category">
+                <div class="color-category-title">Energetic</div>
+                <div class="color-category-options">
+                  <button class="color-option" style="background-color: var(--energetic-yellow);" data-color="#FFEB3B"></button>
+                  <button class="color-option" style="background-color: var(--energetic-orange);" data-color="#FF9900"></button>
+                  <button class="color-option" style="background-color: #FF5252;" data-color="#FF5252"></button>
+                </div>
+              </div>
+              
+              <div class="color-category">
+                <div class="color-category-title">Nostalgic</div>
+                <div class="color-category-options">
+                  <button class="color-option" style="background-color: var(--nostalgic-sepia);" data-color="#A1887F"></button>
+                  <button class="color-option" style="background-color: var(--nostalgic-cream);" data-color="#D7CCC8"></button>
+                  <button class="color-option" style="background-color: #BCAAA4;" data-color="#BCAAA4"></button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="tool-category">
+              <div class="tool-category-title">Tremor Compensation</div>
+              <div class="slider-control">
+                <div class="slider-label">
+                  <span>Low</span>
+                  <span>High</span>
+                </div>
+                <input type="range" min="0" max="10" value="5" class="slider" id="tremor-compensation">
+              </div>
+            </div>
+            
+            <!-- Music Player in Tools Panel -->
+            <div class="tool-category">
+              <div class="tool-category-title">Music</div>
+              <div class="music-player" style="padding: var(--space-sm); margin-bottom: 0;">
+                <div class="music-info">
+                  <div class="music-title" style="font-size: var(--font-size-sm);">Calming Piano</div>
+                </div>
+                <div class="music-controls">
+                  <button class="btn-icon" style="width: 2rem; height: 2rem;" aria-label="Play music">
+                    <svg width="16" height="16" aria-hidden="true">
+                      <use href="#icon-play"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Canvas Area -->
+          <div style="flex: 1;">
+            <div class="canvas-area">
+              <canvas id="drawing-canvas"></canvas>
+            </div>
+            
+            <!-- Canvas Controls -->
+            <div class="flex justify-between" style="margin-top: var(--space-md);">
+              <div>
+                <button class="btn btn-outline" id="clear-canvas">
+                  <svg width="20" height="20" aria-hidden="true" style="margin-right: var(--space-xs);">
+                    <use href="#icon-eraser"></use>
+                  </svg>
+                  Clear Canvas
+                </button>
+                <button class="btn btn-outline" id="undo-action" style="margin-left: var(--space-sm);">
+                  Undo
+                </button>
+              </div>
+              <div>
+                <button class="btn btn-primary" id="save-artwork">
+                  <svg width="20" height="20" aria-hidden="true" style="margin-right: var(--space-xs);">
+                    <use href="#icon-save"></use>
+                  </svg>
+                  Save Artwork
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Template Suggestions -->
+        <div style="margin-top: var(--space-xl);">
+          <h3>Templates & Backgrounds</h3>
+          <div class="gallery-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
+            <div class="gallery-item" style="cursor: pointer;">
+              <div style="height: 120px; background-color: #F5F5F5; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0; display: flex; align-items: center; justify-content: center;">
+                <span style="color: var(--neutral-600);">Blank Canvas</span>
+              </div>
+              <div class="gallery-info">
+                <div class="gallery-title" style="font-size: var(--font-size-sm);">Start Fresh</div>
+              </div>
+            </div>
+            
+            <div class="gallery-item" style="cursor: pointer;">
+              <div style="height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%2260%22 y=%2240%22 fill=%22%2392C5DE%22/><rect width=%22100%22 height=%2240%22 fill=%22%23F8CECC%22/><circle cx=%2275%22 cy=%2220%22 r=%2210%22 fill=%22%23FFEB3B%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title" style="font-size: var(--font-size-sm);">Simple Landscape</div>
+              </div>
+            </div>
+            
+            <div class="gallery-item" style="cursor: pointer;">
+              <div style="height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23F8CECC%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22none%22 stroke=%22%23000000%22 stroke-width=%222%22 stroke-dasharray=%225,5%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title" style="font-size: var(--font-size-sm);">Circle Template</div>
+              </div>
+            </div>
+            
+            <div class="gallery-item" style="cursor: pointer;">
+              <div style="height: 120px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23D5E8D4%22/><path d=%22M20,80 Q50,40 80,80%22 fill=%22none%22 stroke=%22%23000000%22 stroke-width=%222%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title" style="font-size: var(--font-size-sm);">Nature Scene</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery View (will be shown/hidden via JavaScript) -->
+      <div id="gallery-view" style="display: none;">
+        <div class="breadcrumb">
+          <a href="#" class="breadcrumb-item gallery-back-home">Home</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item active">Gallery</span>
+        </div>
+        
+        <div class="flex justify-between items-center">
+          <h2>Your Artwork Gallery</h2>
+          <div class="flex gap-sm">
+            <button class="btn-icon" id="grid-view-btn" title="Grid View">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-gallery"></use>
+              </svg>
+            </button>
+            <button class="btn-icon" id="timeline-view-btn" title="Timeline View">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-gallery"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Gallery Controls -->
+        <div class="flex justify-between items-center" style="margin: var(--space-lg) 0;">
+          <div class="flex gap-md">
+            <select class="input-large" style="min-width: 150px;">
+              <option>All Artwork</option>
+              <option>Recent</option>
+              <option>Favorites</option>
+            </select>
+            <select class="input-large" style="min-width: 150px;">
+              <option>All Dates</option>
+              <option>This Week</option>
+              <option>This Month</option>
+              <option>Last 3 Months</option>
+            </select>
+          </div>
+          <button class="btn btn-outline">
+            <svg width="20" height="20" aria-hidden="true" style="margin-right: var(--space-xs);">
+              <use href="#icon-share"></use>
+            </svg>
+            Share with Family
+          </button>
+        </div>
+        
+        <!-- Gallery Grid View -->
+        <div id="gallery-grid-view" class="gallery-grid">
+          <!-- Dynamic content will be populated here -->
+          <div class="gallery-item">
+            <div style="height: 200px; background-color: var(--calm-blue); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+            <div class="gallery-info">
+              <div class="gallery-title">Ocean Sunset</div>
+              <div class="gallery-date">Created today</div>
+              <div class="flex justify-between" style="margin-top: var(--space-sm);">
+                <button class="btn-icon" title="Download">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-save"></use>
+                  </svg>
+                </button>
+                <button class="btn-icon" title="Share">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-share"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="gallery-item">
+            <div style="height: 200px; background-color: var(--nostalgic-cream); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+            <div class="gallery-info">
+              <div class="gallery-title">Spring Garden</div>
+              <div class="gallery-date">May 15, 2023</div>
+              <div class="flex justify-between" style="margin-top: var(--space-sm);">
+                <button class="btn-icon" title="Download">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-save"></use>
+                  </svg>
+                </button>
+                <button class="btn-icon" title="Share">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-share"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="gallery-item">
+            <div style="height: 200px; background-color: var(--energetic-yellow); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+            <div class="gallery-info">
+              <div class="gallery-title">Sunny Day</div>
+              <div class="gallery-date">May 12, 2023</div>
+              <div class="flex justify-between" style="margin-top: var(--space-sm);">
+                <button class="btn-icon" title="Download">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-save"></use>
+                  </svg>
+                </button>
+                <button class="btn-icon" title="Share">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-share"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="gallery-item">
+            <div style="height: 200px; background-color: var(--calm-green); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+            <div class="gallery-info">
+              <div class="gallery-title">Forest Path</div>
+              <div class="gallery-date">May 10, 2023</div>
+              <div class="flex justify-between" style="margin-top: var(--space-sm);">
+                <button class="btn-icon" title="Download">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-save"></use>
+                  </svg>
+                </button>
+                <button class="btn-icon" title="Share">
+                  <svg width="20" height="20" aria-hidden="true">
+                    <use href="#icon-share"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Timeline View (Initially Hidden) -->
+        <div id="timeline-view" style="display: none;">
+          <div class="card">
+            <h3>Artwork Journey Timeline</h3>
+            <div class="timeline" style="margin-top: var(--space-lg);">
+              <div class="timeline-item">
+                <div class="timeline-node"></div>
+                <div class="timeline-label">May 10</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-node"></div>
+                <div class="timeline-label">May 12</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-node"></div>
+                <div class="timeline-label">May 15</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-node"></div>
+                <div class="timeline-label">Today</div>
+              </div>
+            </div>
+            
+            <div style="margin-top: var(--space-xl);">
+              <h4>Today's Creations</h4>
+              <div class="flex gap-md" style="overflow-x: auto; padding: var(--space-md) 0;">
+                <div class="card" style="flex: 0 0 250px;">
+                  <div style="height: 150px; background-color: var(--calm-blue); border-radius: var(--border-radius-sm); margin-bottom: var(--space-sm);"></div>
+                  <div class="gallery-title">Ocean Sunset</div>
+                  <div class="gallery-date">Created today, 2:30 PM</div>
+                </div>
+              </div>
+            </div>
+            
+            <div style="margin-top: var(--space-xl);">
+              <h4>May 15, 2023</h4>
+              <div class="flex gap-md" style="overflow-x: auto; padding: var(--space-md) 0;">
+                <div class="card" style="flex: 0 0 250px;">
+                  <div style="height: 150px; background-color: var(--nostalgic-cream); border-radius: var(--border-radius-sm); margin-bottom: var(--space-sm);"></div>
+                  <div class="gallery-title">Spring Garden</div>
+                  <div class="gallery-date">Created May 15, 3:15 PM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Memory Association Panel -->
+        <div class="card" style="margin-top: var(--space-xl);">
+          <h3>Memory Associations</h3>
+          <p>Connect your artwork to meaningful memories to enhance the therapeutic experience.</p>
+          
+          <div class="flex gap-lg" style="margin-top: var(--space-lg);">
+            <div style="width: 250px; flex-shrink: 0;">
+              <div style="height: 200px; background-color: var(--nostalgic-cream); border-radius: var(--border-radius-md); margin-bottom: var(--space-sm);"></div>
+              <div class="gallery-title">Spring Garden</div>
+              <div class="gallery-date">May 15, 2023</div>
+            </div>
+            
+            <div style="flex-grow: 1;">
+              <form>
+                <div style="margin-bottom: var(--space-md);">
+                  <label style="display: block; margin-bottom: var(--space-xs); font-weight: 600;">Associated Memory</label>
+                  <textarea class="input-large" style="width: 100%; height: 100px; resize: vertical;">This reminds me of my grandmother's garden where we would spend summer afternoons together.</textarea>
+                </div>
+                
+                <div style="margin-bottom: var(--space-md);">
+                  <label style="display: block; margin-bottom: var(--space-xs); font-weight: 600;">Record Audio Memory</label>
+                  <button class="btn btn-outline">
+                    <svg width="20" height="20" aria-hidden="true" style="margin-right: var(--space-xs);">
+                      <use href="#icon-voice"></use>
+                    </svg>
+                    Record Voice Memory
+                  </button>
+                </div>
+                
+                <button class="btn btn-primary">Save Memory Association</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guided Creation View -->
+      <div id="guided-creation" style="display: none;">
+        <div class="breadcrumb">
+          <a href="#" class="breadcrumb-item guided-back-home">Home</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item active">Guided Creation</span>
+        </div>
+        
+        <h2>Step-by-Step Guided Creation</h2>
+        
+        <!-- Current Guided Project -->
+        <div class="card" style="margin-top: var(--space-lg);">
+          <div class="flex justify-between items-center">
+            <h3>Simple Landscape: Ocean Sunset</h3>
+            <div>
+              <button class="btn btn-outline" id="guided-back-btn">
+                <svg width="20" height="20" aria-hidden="true" style="margin-right: var(--space-xs);">
+                  <use href="#icon-back"></use>
+                </svg>
+                Previous Step
+              </button>
+              <button class="btn btn-primary" id="guided-next-btn" style="margin-left: var(--space-sm);">
+                Next Step
+                <svg width="20" height="20" aria-hidden="true" style="margin-left: var(--space-xs);">
+                  <use href="#icon-guided"></use>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Progress Indicator -->
+          <div style="margin: var(--space-lg) 0;">
+            <div class="flex justify-between" style="margin-bottom: var(--space-xs);">
+              <span>Progress</span>
+              <span>Step 2 of 5</span>
+            </div>
+            <div style="height: 8px; width: 100%; background-color: var(--neutral-300); border-radius: 4px; overflow: hidden;">
+              <div style="height: 100%; width: 40%; background-color: var(--primary-500); border-radius: 4px;"></div>
+            </div>
+          </div>
+          
+          <!-- Step Content -->
+          <div class="flex gap-lg">
+            <!-- Instructions -->
+            <div style="flex: 1;">
+              <div class="card" style="background-color: var(--primary-100);">
+                <h4>Step 2: Add the Ocean</h4>
+                <p>Now we'll add a calming blue ocean beneath our sky.</p>
+                
+                <ol style="margin: var(--space-md) 0; padding-left: var(--space-xl);">
+                  <li style="margin-bottom: var(--space-sm);">Select the blue color from the palette</li>
+                  <li style="margin-bottom: var(--space-sm);">Use the large brush to fill the lower half of your canvas</li>
+                  <li>Try varying the shade from darker at the bottom to lighter near the horizon</li>
+                </ol>
+                
+                <div style="margin-top: var(--space-lg);">
+                  <button class="btn btn-outline" id="play-instructions">
+                    <svg width="20" height="20" aria-hidden="true" style="margin-right: var(--space-xs);">
+                      <use href="#icon-voice"></use>
+                    </svg>
+                    Play Audio Instructions
+                  </button>
+                </div>
+              </div>
+              
+              <!-- Recommended Tools -->
+              <div style="margin-top: var(--space-lg);">
+                <h4>Recommended Tools</h4>
+                <div class="flex gap-md" style="margin-top: var(--space-sm);">
+                  <button class="tool-option" style="border-color: var(--primary-500);">
+                    <svg width="24" height="24" aria-hidden="true">
+                      <use href="#icon-brush"></use>
+                    </svg>
+                  </button>
+                  <div style="height: 48px; width: 48px; border-radius: var(--border-radius-sm); background-color: var(--calm-blue); border: 2px solid var(--primary-500);"></div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Reference Image -->
+            <div style="width: 300px;">
+              <h4>Reference</h4>
+              <div style="margin-top: var(--space-sm); height: 200px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%2240%22 fill=%22%23F8CECC%22/><rect width=%22100%22 height=%2260%22 y=%2240%22 fill=%22%2392C5DE%22/><circle cx=%2275%22 cy=%2220%22 r=%2210%22 fill=%22%23FFEB3B%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md);"></div>
+              
+              <h4 style="margin-top: var(--space-lg);">Your Progress</h4>
+              <div style="margin-top: var(--space-sm); height: 200px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%2240%22 fill=%22%23F8CECC%22/><rect width=%22100%22 height=%2260%22 y=%2240%22 fill=%22%23FFFFFF%22/><circle cx=%2275%22 cy=%2220%22 r=%2210%22 fill=%22%23FFEB3B%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md);"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Other Projects -->
+        <div style="margin-top: var(--space-xxl);">
+          <h3>More Guided Projects</h3>
+          <div class="gallery-grid" style="margin-top: var(--space-lg);">
+            <div class="gallery-item card-interactive">
+              <div style="height: 180px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%2260%22 fill=%22%23D5E8D4%22/><rect width=%22100%22 height=%2240%22 y=%2260%22 fill=%22%23A9C4EB%22/><circle cx=%2280%22 cy=%2225%22 r=%2210%22 fill=%22%23FFFF99%22/><path d=%22M20,60 Q30,50 40,60 Q50,50 60,60 Q70,50 80,60%22 stroke=%22%23333333%22 fill=%22none%22 stroke-width=%221%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Spring Meadow</div>
+                <div class="gallery-date">Beginner · 15 minutes</div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: var(--space-sm);">Start Project</button>
+              </div>
+            </div>
+            
+            <div class="gallery-item card-interactive">
+              <div style="height: 180px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23D5E8D4%22/><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22%23FFF2CC%22 stroke=%22%23D6B656%22 stroke-width=%222%22/><path d=%22M40,50 L60,50 M50,40 L50,60%22 stroke=%22%23D6B656%22 stroke-width=%222%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Simple Flower</div>
+                <div class="gallery-date">Beginner · 10 minutes</div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: var(--space-sm);">Start Project</button>
+              </div>
+            </div>
+            
+            <div class="gallery-item card-interactive">
+              <div style="height: 180px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23F5F5F5%22/><rect x=%2230%22 y=%2230%22 width=%2240%22 height=%2260%22 fill=%22%23FFE6CC%22 stroke=%22%23D79B00%22 stroke-width=%222%22/><path d=%22M40,30 L40,10 L60,10 L60,30%22 stroke=%22%23D79B00%22 fill=%22none%22 stroke-width=%222%22/><rect x=%2245%22 y=%2260%22 width=%2210%22 height=%2230%22 fill=%22%23D79B00%22/></svg>'); background-size: cover; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">House Drawing</div>
+                <div class="gallery-date">Intermediate · 20 minutes</div>
+                <button class="btn btn-primary" style="width: 100%; margin-top: var(--space-sm);">Start Project</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <footer style="margin-top: var(--space-xxl); padding: var(--space-lg) 0; border-top: 1px solid var(--neutral-300);">
+      <div class="flex justify-between items-center">
+        <div>
+          <p style="margin-bottom: var(--space-xs);">Digital Canvas Studio</p>
+          <p style="color: var(--neutral-700); font-size: var(--font-size-sm);">Art Therapy Platform for Dementia Patients</p>
+        </div>
+        <div>
+          <button class="btn-icon" aria-label="Get help">
+            <svg width="24" height="24" aria-hidden="true">
+              <use href="#icon-help"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Load SVG icons
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('src/icons.svg')
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('svg-icons').innerHTML = svg;
+        })
+        .catch(error => {
+          console.error('Error loading SVG icons:', error);
+        });
+      
+      // Set time-based greeting
+      const hour = new Date().getHours();
+      const greetingElement = document.querySelector('.time-greeting');
+      let greeting = 'Good morning';
+      
+      if (hour >= 12 && hour < 17) {
+        greeting = 'Good afternoon';
+      } else if (hour >= 17) {
+        greeting = 'Good evening';
+      }
+      
+      if (greetingElement) {
+        greetingElement.textContent = `${greeting}, Alice`;
+      }
+      
+      // Initialize Canvas when the DOM is loaded
+      initializeCanvas();
+    });
+    
+    // High Contrast Toggle
+    const contrastToggle = document.getElementById('contrast-toggle');
+    const app = document.getElementById('app');
+    
+    contrastToggle.addEventListener('click', function() {
+      document.body.classList.toggle('high-contrast');
+      app.classList.toggle('high-contrast');
+    });
+
+    // View Switching
+    const homeView = document.getElementById('home-view');
+    const canvasView = document.getElementById('canvas-view');
+    const galleryView = document.getElementById('gallery-view');
+    const guidedCreationView = document.getElementById('guided-creation');
+    
+    function showView(viewElement) {
+      // Hide all views
+      homeView.style.display = 'none';
+      canvasView.style.display = 'none';
+      galleryView.style.display = 'none';
+      guidedCreationView.style.display = 'none';
+      
+      // Show the selected view with a fade-in animation
+      viewElement.style.display = 'block';
+      viewElement.classList.add('animate-fade-in');
+      
+      // Update active nav item
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Set the correct nav item as active
+      if (viewElement === homeView) {
+        document.querySelector('.nav-item:nth-child(1)').classList.add('active');
+      } else if (viewElement === canvasView) {
+        document.querySelector('.nav-item:nth-child(2)').classList.add('active');
+        // Re-init canvas if needed
+        if (canvasView.style.display !== 'none') {
+          resizeCanvas();
+        }
+      } else if (viewElement === galleryView) {
+        document.querySelector('.nav-item:nth-child(3)').classList.add('active');
+      }
+    }
+    
+    // Create Art card and button
+    const createArtCard = document.getElementById('create-art-card');
+    const createArtBtn = document.getElementById('create-art-btn');
+    createArtCard.addEventListener('click', function() {
+      showView(canvasView);
+    });
+    createArtBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      showView(canvasView);
+    });
+    
+    // Main page "Start Creating" button
+    const mainCreateBtn = document.querySelector('.hero-content .btn-primary');
+    if (mainCreateBtn) {
+      mainCreateBtn.addEventListener('click', function() {
+        showView(canvasView);
+      });
+    }
+    
+    // Back to home button
+    const backToHomeBtn = document.getElementById('back-to-home');
+    if (backToHomeBtn) {
+      backToHomeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(homeView);
+      });
+    }
+    
+    // Gallery button and card
+    const viewGalleryCard = document.getElementById('view-gallery-card');
+    const viewGalleryBtn = document.getElementById('view-gallery-btn');
+    viewGalleryCard.addEventListener('click', function() {
+      showView(galleryView);
+      loadGalleryItems();
+    });
+    viewGalleryBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      showView(galleryView);
+      loadGalleryItems();
+    });
+    
+    // Guided mode button and card
+    const guidedModeCard = document.getElementById('guided-mode-card');
+    const guidedModeBtn = document.getElementById('guided-mode-btn');
+    guidedModeCard.addEventListener('click', function() {
+      showView(guidedCreationView);
+    });
+    
+    guidedModeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      showView(guidedCreationView);
+    });
+    
+    // Back home from guided view
+    const guidedBackHomeLinks = document.querySelectorAll('.guided-back-home');
+    guidedBackHomeLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(homeView);
+      });
+    });
+    
+    // Guided creation step navigation
+    let currentStep = 2; // Starting at step 2 for demonstration
+    const totalSteps = 5;
+    
+    const guidedBackBtn = document.getElementById('guided-back-btn');
+    const guidedNextBtn = document.getElementById('guided-next-btn');
+    
+    if (guidedBackBtn && guidedNextBtn) {
+      guidedBackBtn.addEventListener('click', function() {
+        if (currentStep > 1) {
+          currentStep--;
+          updateGuidedStepUI();
+        }
+      });
+      
+      guidedNextBtn.addEventListener('click', function() {
+        if (currentStep < totalSteps) {
+          currentStep++;
+          updateGuidedStepUI();
+        } else {
+          // Complete the guided creation
+          alert('Congratulations! You have completed this guided project.');
+          showView(homeView);
+        }
+      });
+    }
+    
+    // Function to update the guided creation UI based on the current step
+    function updateGuidedStepUI() {
+      // Update progress bar
+      const progressIndicator = document.querySelector('.card .flex.justify-between + div > div:last-child');
+      if (progressIndicator) {
+        progressIndicator.style.width = `${(currentStep / totalSteps) * 100}%`;
+      }
+      
+      // Update step counter
+      const stepCounter = document.querySelector('.card .flex.justify-between span:last-child');
+      if (stepCounter) {
+        stepCounter.textContent = `Step ${currentStep} of ${totalSteps}`;
+      }
+      
+      // Update step content (this would be more dynamic in a real implementation)
+      const stepTitle = document.querySelector('.card h4:first-of-type');
+      if (stepTitle) {
+        stepTitle.textContent = `Step ${currentStep}: ${getStepTitle(currentStep)}`;
+      }
+      
+      // Update instructions
+      const stepInstructions = document.querySelector('.card h4:first-of-type + p');
+      if (stepInstructions) {
+        stepInstructions.textContent = getStepInstructions(currentStep);
+      }
+      
+      // Update the reference and progress images
+      updateStepImages(currentStep);
+      
+      // Disable back button on first step
+      if (guidedBackBtn) {
+        guidedBackBtn.disabled = currentStep === 1;
+      }
+      
+      // Change next button text on last step
+      if (guidedNextBtn) {
+        guidedNextBtn.textContent = currentStep === totalSteps ? 'Complete' : 'Next Step';
+      }
+    }
+    
+    // Helper functions to get step content
+    function getStepTitle(step) {
+      const titles = [
+        'Create the Sky',
+        'Add the Ocean',
+        'Paint the Sun',
+        'Add Reflections',
+        'Final Touches'
+      ];
+      return titles[step - 1] || 'Unknown Step';
+    }
+    
+    function getStepInstructions(step) {
+      const instructions = [
+        'Start by creating a gentle gradient for the sky.',
+        'Now we\'ll add a calming blue ocean beneath our sky.',
+        'Add a warm, glowing sun to your scene.',
+        'Create reflections in the water to add depth.',
+        'Add final details to complete your ocean sunset.'
+      ];
+      return instructions[step - 1] || 'Instructions not available.';
+    }
+    
+    function updateStepImages(step) {
+      // This would dynamically update images in a real implementation
+      // For this demo, we'll keep the same images
+    }
+    
+    // Audio instructions playback
+    const playInstructionsBtn = document.getElementById('play-instructions');
+    if (playInstructionsBtn) {
+      playInstructionsBtn.addEventListener('click', function() {
+        // In a real implementation, this would play an audio file
+        alert('In a complete implementation, this would play audio instructions for this step.');
+      });
+    }
+    
+    // Start Project buttons
+    const startProjectBtns = document.querySelectorAll('.gallery-item .btn-primary');
+    startProjectBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // In a real implementation, this would start the selected project
+        alert('In a complete implementation, this would start the selected guided project.');
+      });
+    });
+
+    // Gallery View functionality
+    function loadGalleryItems() {
+      try {
+        const savedArtworks = JSON.parse(localStorage.getItem('savedArtworks') || '[]');
+        const galleryGrid = document.getElementById('gallery-grid-view');
+        
+        // Only update if there are saved artworks and we have the gallery grid
+        if (savedArtworks.length > 0 && galleryGrid) {
+          // Create HTML for each saved artwork
+          const artworkHTML = savedArtworks.map(artwork => `
+            <div class="gallery-item" data-id="${artwork.id}">
+              <div style="height: 200px; background-image: url('${artwork.dataURL}'); background-size: cover; background-position: center; border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">${artwork.name || 'My Artwork'}</div>
+                <div class="gallery-date">Created ${formatDate(artwork.date)}</div>
+                <div class="flex justify-between" style="margin-top: var(--space-sm);">
+                  <button class="btn-icon download-artwork" title="Download" data-id="${artwork.id}">
+                    <svg width="20" height="20" aria-hidden="true">
+                      <use href="#icon-save"></use>
+                    </svg>
+                  </button>
+                  <button class="btn-icon share-artwork" title="Share" data-id="${artwork.id}">
+                    <svg width="20" height="20" aria-hidden="true">
+                      <use href="#icon-share"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+          
+          // Add the new artworks to the beginning of the gallery
+          galleryGrid.innerHTML = artworkHTML + galleryGrid.innerHTML;
+          
+          // Add event listeners to the new buttons
+          document.querySelectorAll('.download-artwork').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const artworkId = this.dataset.id;
+              downloadArtwork(artworkId);
+            });
+          });
+          
+          document.querySelectorAll('.share-artwork').forEach(btn => {
+            btn.addEventListener('click', function() {
+              const artworkId = this.dataset.id;
+              shareArtwork(artworkId);
+            });
+          });
+        }
+      } catch (error) {
+        console.error('Error loading gallery items:', error);
+      }
+    }
+    
+    // Helper function to format dates
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const now = new Date();
+      
+      // If it's today
+      if (date.toDateString() === now.toDateString()) {
+        return 'today';
+      }
+      
+      // Otherwise, format as Month Day, Year
+      return date.toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    }
+    
+    // Function to download artwork
+    function downloadArtwork(artworkId) {
+      try {
+        const savedArtworks = JSON.parse(localStorage.getItem('savedArtworks') || '[]');
+        const artwork = savedArtworks.find(art => art.id === artworkId);
+        
+        if (artwork) {
+          // Create a temporary link
+          const link = document.createElement('a');
+          link.href = artwork.dataURL;
+          link.download = `${artwork.name || 'artwork'}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } catch (error) {
+        console.error('Error downloading artwork:', error);
+        alert('Failed to download artwork. Please try again.');
+      }
+    }
+    
+    // Function to share artwork (simplified for demo)
+    function shareArtwork(artworkId) {
+      alert('Sharing functionality will be implemented in the next phase. This would allow sending the artwork to family members or caregivers.');
+    }
+  </script>
+</body>
+</html> 

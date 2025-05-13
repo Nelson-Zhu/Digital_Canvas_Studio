@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <!-- Navigation Icons -->
+  <symbol id="icon-home" viewBox="0 0 24 24">
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-canvas" viewBox="0 0 24 24">
+    <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z" stroke="currentColor" stroke-width="2" fill="none"/>
+    <circle cx="8" cy="10" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M13 16l3-3 5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </symbol>
+  
+  <symbol id="icon-gallery" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="none" rx="1"/>
+    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="none" rx="1"/>
+    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" fill="none" rx="1"/>
+    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" fill="none" rx="1"/>
+  </symbol>
+  
+  <symbol id="icon-guided" viewBox="0 0 24 24">
+    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14h-2v-4H8v-2h4V7h2v4h4v2h-4v4z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-back" viewBox="0 0 24 24">
+    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-settings" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <!-- Tool Icons -->
+  <symbol id="icon-brush" viewBox="0 0 24 24">
+    <path d="M20.71 4.63l-1.34-1.34c-.39-.39-1.02-.39-1.41 0L9 12.25 11.75 15l8.96-8.96c.39-.39.39-1.02 0-1.41zM7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-eraser" viewBox="0 0 24 24">
+    <path d="M15.14 3c-.51 0-1.02.2-1.41.59L2.59 14.73c-.78.77-.78 2.04 0 2.83L5.03 20h7.94l8.23-8.23c.78-.77.78-2.04 0-2.83l-4.24-4.24c-.39-.4-.9-.6-1.41-.6H15.14z" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M17 20l-5-5" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-fill" viewBox="0 0 24 24">
+    <path d="M16.56 8.94L7.62 0 6.21 1.41l2.38 2.38-5.15 5.15c-.59.59-.59 1.54 0 2.12l5.5 5.5c.29.29.68.44 1.06.44s.77-.15 1.06-.44l5.5-5.5c.59-.58.59-1.53 0-2.12zM5.21 10L10 5.21 14.79 10H5.21zM19 11.5s-2 2.17-2 3.5c0 1.1.9 2 2 2s2-.9 2-2c0-1.33-2-3.5-2-3.5z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-shape" viewBox="0 0 24 24">
+    <circle cx="12" cy="8" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+    <rect x="5" y="15" width="14" height="6" stroke="currentColor" stroke-width="2" fill="none" rx="1"/>
+  </symbol>
+  
+  <symbol id="icon-line" viewBox="0 0 24 24">
+    <path d="M4 20l16-16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </symbol>
+  
+  <symbol id="icon-texture" viewBox="0 0 24 24">
+    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M12 15c1.65 0 3-1.35 3-3s-1.35-3-3-3-3 1.35-3 3 1.35 3 3 3z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <!-- Media Icons -->
+  <symbol id="icon-music" viewBox="0 0 24 24">
+    <path d="M8 18c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2 2 .9 2 2zm6-14v12c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2c.55 0 1.05.22 1.41.59L14 9V4h2c1.1 0 2-.9 2-2v-.5" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M12 13.5V4" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-play" viewBox="0 0 24 24">
+    <path d="M8 5v14l11-7z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-pause" viewBox="0 0 24 24">
+    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-volume" viewBox="0 0 24 24">
+    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <!-- Accessibility Icons -->
+  <symbol id="icon-contrast" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M12 3v18" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M12 3c5 0 9 4 9 9s-4 9-9 9" fill="none" stroke="currentColor" stroke-width="2"/>
+  </symbol>
+  
+  <symbol id="icon-font-size" viewBox="0 0 24 24">
+    <path d="M9 7h6v2h-6z" stroke="currentColor" stroke-width="0" fill="currentColor"/>
+    <path d="M7 13h10v2H7z" stroke="currentColor" stroke-width="0" fill="currentColor"/>
+    <path d="M5 19h14v2H5z" stroke="currentColor" stroke-width="0" fill="currentColor"/>
+    <path d="M12 3 4 21h4l1.5-4h5L16 21h4L12 3zm-1 12 1.5-4 1.5 4h-3z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-voice" viewBox="0 0 24 24">
+    <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-share" viewBox="0 0 24 24">
+    <circle cx="18" cy="5" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+    <circle cx="6" cy="12" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+    <circle cx="18" cy="19" r="3" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M8.59 13.51l6.83 3.98m-.01-10.98L8.59 10.49" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-save" viewBox="0 0 24 24">
+    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M17 21v-8H7v8" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M7 3v5h8" stroke="currentColor" stroke-width="2" fill="none"/>
+  </symbol>
+  
+  <symbol id="icon-help" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
+    <path d="M12 17h.01m-1-9.99h2c1.1 0 2 .9 2 2 0 .74-.4 1.38-1 1.73-.6.35-1 1.02-1 1.76V14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg> 

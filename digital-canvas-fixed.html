@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Canvas Studio</title>
+  <link rel="stylesheet" href="src/enhanced-styles.css">
+  <link rel="stylesheet" href="src/css-fix.css">
+  <style>
+    /* Layout Styles */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+    
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+    
+    .col-md-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 0 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      
+      .hero-canvas {
+        margin-top: var(--space-lg);
+      }
+    }
+    
+    /* Card hover effect with hardcoded color */
+    .card-hover-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(66, 133, 244, 0.1) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Include SVG icons directly in the page -->
+  <div id="svg-icons" style="display: none;">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="icon-home" viewBox="0 0 24 24">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-canvas" viewBox="0 0 24 24">
+        <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z" fill="currentColor"/>
+        <path d="M17 13h-3v3h3v-3zm-6 0H8v3h3v-3zm3-6h3v3h-3V7zm-6 0h3v3H8V7z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-gallery" viewBox="0 0 24 24">
+        <path d="M22 16V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2zm-11-4l2.03 2.71L16 11l4 5H8l3-4zM2 6v14c0 1.1.9 2 2 2h14v-2H4V6H2z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-guided" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+        <path d="M16 16l-4-4l-4 4" fill="currentColor"/>
+        <path d="M12 20V10" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-play" viewBox="0 0 24 24">
+        <path d="M8 5v14l11-7z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-volume" viewBox="0 0 24 24">
+        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-brush" viewBox="0 0 24 24">
+        <path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.21 0 4-1.79 4-4 0-1.66-1.34-3-3-3zm13.71-9.37l-1.34-1.34c-.39-.39-1.02-.39-1.41 0L9 12.25 11.75 15l8.96-8.96c.39-.39.39-1.02 0-1.41z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-eraser" viewBox="0 0 24 24">
+        <path d="M16.24 3.56l4.95 4.94c.78.79.78 2.05 0 2.84L12 20.53a4.008 4.008 0 0 1-5.66 0L2.81 17c-.78-.79-.78-2.05 0-2.84l10.6-10.6c.79-.78 2.05-.78 2.83 0zM6.34 17.66l3.53 3.53c.39.39 1.02.39 1.41 0L20.5 12c.39-.39.39-1.02 0-1.42L17 7.08l-10.66 10.58z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-save" viewBox="0 0 24 24">
+        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-share" viewBox="0 0 24 24">
+        <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-contrast" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
+        <path d="M12 4v16c4.41 0 8-3.59 8-8s-3.59-8-8-8z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-back" viewBox="0 0 24 24">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-help" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" fill="currentColor"/>
+      </symbol>
+      
+      <symbol id="icon-voice" viewBox="0 0 24 24">
+        <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" fill="currentColor"/>
+      </symbol>
+    </svg>
+  </div>
+  
+  <!-- Accessibility Menu - Fixed Position -->
+  <div class="access-menu" style="position: fixed; top: 20px; right: 20px; z-index: 100;">
+    <button class="btn-icon" id="contrast-toggle" aria-label="Toggle high contrast mode">
+      <svg width="24" height="24" aria-hidden="true">
+        <use href="#icon-contrast"></use>
+      </svg>
+    </button>
+  </div>
+  
+  <div id="app" class="container">
+    <!-- Navigation -->
+    <nav class="nav-container" style="border-radius: var(--border-radius-md); margin-bottom: var(--space-lg);">
+      <div class="nav-logo">Digital Canvas Studio</div>
+      <div class="nav-items">
+        <a href="#" class="nav-item active" id="nav-home">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-home"></use>
+          </svg>
+          Home
+        </a>
+        <a href="#" class="nav-item" id="nav-canvas">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-canvas"></use>
+          </svg>
+          Canvas
+        </a>
+        <a href="#" class="nav-item" id="nav-gallery">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-gallery"></use>
+          </svg>
+          Gallery
+        </a>
+      </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+      <!-- Home View -->
+      <div id="home-view">
+        <!-- Hero Section with Scroll Animation -->
+        <section class="hero-enhanced">
+          <div class="parallax-background"></div>
+          <div class="scroll-container">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="hero-content">
+                    <div class="time-greeting scroll-item stagger-item">Good afternoon, Alice</div>
+                    <h1 class="hero-title scroll-item stagger-item">Welcome to <span class="highlight">Digital Canvas Studio</span></h1>
+                    <p class="welcome-message scroll-item stagger-item">Create, explore, and express yourself through art</p>
+                    <button class="btn btn-primary btn-large animate-pulse scroll-item stagger-item">Start Creating</button>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="hero-canvas scroll-item">
+                    <div style="width: 100%; height: 100%; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%2240%22 fill=%22%23F8CECC%22/><rect width=%22100%22 height=%2260%22 y=%2240%22 fill=%22%2392C5DE%22/><circle cx=%2275%22 cy=%2220%22 r=%2210%22 fill=%22%23FFEB3B%22/></svg>'); background-size: cover;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Feature Cards with Animations -->
+        <div class="feature-cards">
+          <div class="card feature-card card-interactive scroll-item" id="create-art-card">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-canvas"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">Create Art</h3>
+              <p class="feature-description">Express yourself through our specially designed digital canvas with tools that adapt to your needs.</p>
+              <button class="btn btn-primary" id="create-art-btn">Start Creating</button>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="card feature-card card-interactive scroll-item" id="view-gallery-card" style="transition-delay: 0.15s;">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-gallery"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">View Gallery</h3>
+              <p class="feature-description">See your creative journey through time with our beautifully organized gallery view.</p>
+              <button class="btn btn-primary" id="view-gallery-btn">Open Gallery</button>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="card feature-card card-interactive scroll-item" id="guided-mode-card" style="transition-delay: 0.3s;">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-guided"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">Guided Creation</h3>
+              <p class="feature-description">Follow step-by-step guidance to create beautiful art with supportive instruction.</p>
+              <button class="btn btn-primary" id="guided-mode-btn">Try Guided Mode</button>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+        </div>
+        
+        <!-- Additional content goes here -->
+      </div>
+      
+      <!-- Other views go here -->
+    </main>
+    
+    <footer style="margin-top: var(--space-xxl); padding: var(--space-lg) 0; border-top: 1px solid var(--neutral-300);">
+      <div class="flex justify-between items-center">
+        <div>
+          <p style="margin-bottom: var(--space-xs);">Digital Canvas Studio</p>
+          <p style="color: var(--neutral-700); font-size: var(--font-size-sm);">Art Therapy Platform for Dementia Patients</p>
+        </div>
+        <div>
+          <button class="btn-icon" aria-label="Get help">
+            <svg width="24" height="24" aria-hidden="true">
+              <use href="#icon-help"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("DOM loaded!");
+      
+      // Initialize all scroll animation items to be visible
+      setTimeout(() => {
+        document.querySelectorAll('.scroll-item').forEach(item => {
+          item.classList.add('visible');
+        });
+      }, 300);
+      
+      // Initialize scroll animations
+      initScrollAnimations();
+      
+      // Initialize card hover effects
+      initCardHoverEffects();
+    });
+    
+    // Scroll Animation Functionality
+    function initScrollAnimations() {
+      // Parallax effect on scroll
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const parallaxBg = document.querySelector('.parallax-background');
+        
+        if (parallaxBg) {
+          // Move background at a different rate for parallax effect
+          parallaxBg.style.transform = `translateZ(-10px) scale(2) translateY(${scrollTop * 0.15}px)`;
+        }
+        
+        // Get all staggered items for additional effects
+        const staggerItems = document.querySelectorAll('.stagger-item');
+        staggerItems.forEach((item, index) => {
+          const delay = index * 0.05;
+          const translateY = scrollTop * 0.03 * (index + 1);
+          item.style.transform = `translateY(${-translateY}px)`;
+        });
+      });
+      
+      // Animate hero canvas on mouse move for 3D effect
+      const heroCanvas = document.querySelector('.hero-canvas');
+      if (heroCanvas) {
+        document.addEventListener('mousemove', (e) => {
+          const mouseX = e.clientX / window.innerWidth - 0.5;
+          const mouseY = e.clientY / window.innerHeight - 0.5;
+          
+          heroCanvas.style.transform = `translateZ(0) rotateX(${mouseY * 5}deg) rotateY(${mouseX * -5}deg) scale(0.98)`;
+        });
+      }
+    }
+    
+    // Add interactive hover effect to cards
+    function initCardHoverEffects() {
+      const cards = document.querySelectorAll('.feature-card');
+      
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          // Get position of mouse relative to card
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          // Set CSS variables for the radial gradient position
+          const hoverEffect = card.querySelector('.card-hover-effect');
+          if (hoverEffect) {
+            hoverEffect.style.setProperty('--x', `${(x / rect.width) * 100}%`);
+            hoverEffect.style.setProperty('--y', `${(y / rect.height) * 100}%`);
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html> 

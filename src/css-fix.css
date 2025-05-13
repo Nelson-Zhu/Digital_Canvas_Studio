@@ -1,0 +1,7 @@
+/* Fix for missing CSS variables */
+:root {
+  /* RGB versions for opacity/gradients */
+  --primary-rgb: 66, 133, 244;   /* RGB for #4285F4 */
+  --secondary-rgb: 156, 124, 244; /* RGB for #9C7CF4 */
+  --neutral-rgb: 32, 33, 36;     /* RGB for #202124 */
+} 

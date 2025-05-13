@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<!-- Enhanced Digital Canvas Studio with Scroll Animations and Improved Navigation -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Canvas Studio</title>
+  <link rel="stylesheet" href="src/enhanced-styles.css">
+  <style>
+    /* Layout Styles */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+    
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+    }
+    
+    .col-md-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+      padding: 0 15px;
+    }
+    
+    @media (max-width: 768px) {
+      .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+      
+      .hero-canvas {
+        margin-top: var(--space-lg);
+      }
+    }
+    
+    /* Original Hero Styles */
+    .hero-section {
+      background: linear-gradient(135deg, var(--primary-100), var(--secondary-100));
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      z-index: 1;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><path d=%22M10,10 Q50,40 90,10 Q60,50 90,90 Q50,60 10,90 Q40,50 10,10 Z%22 fill=%22none%22 stroke=%22%234285F4%22 stroke-width=%222%22/></svg>');
+      background-size: 300px;
+      animation: bg-slide 60s linear infinite;
+    }
+    
+    @keyframes bg-slide {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 1000px; }
+    }
+    
+    .welcome-message {
+      color: var(--primary-700);
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--space-sm);
+    }
+    
+    /* Feature Cards */
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xxl);
+    }
+    
+    .feature-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--neutral-200);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      border-color: var(--primary-300);
+    }
+    
+    .card-hover-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(var(--primary-rgb), 0.1) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    
+    .feature-card:hover .card-hover-effect {
+      opacity: 1;
+    }
+    
+    .feature-icon {
+      position: absolute;
+      top: var(--space-md);
+      right: var(--space-md);
+      width: 48px;
+      height: 48px;
+      color: var(--primary-400);
+      opacity: 0.5;
+    }
+    
+    .feature-card:hover .feature-icon {
+      color: var(--primary-500);
+      opacity: 0.8;
+      transform: scale(1.1);
+      transition: all var(--transition-medium);
+    }
+    
+    .feature-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .feature-title {
+      font-size: var(--font-size-lg);
+      color: var(--primary-700);
+      margin-bottom: var(--space-xs);
+    }
+    
+    .feature-description {
+      flex: 1;
+      margin-bottom: var(--space-lg);
+    }
+    
+    /* Music Player */
+    .music-player {
+      background-color: var(--secondary-100);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-md);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+    
+    .music-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+    
+    .music-info {
+      flex: 1;
+    }
+    
+    .music-title {
+      font-weight: 600;
+      margin-bottom: var(--space-xxs);
+    }
+    
+    .music-category {
+      color: var(--neutral-700);
+      font-size: var(--font-size-sm);
+    }
+    
+    .time-greeting {
+      color: var(--secondary-600);
+      font-size: var(--font-size-md);
+      margin-bottom: var(--space-md);
+    }
+    
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: var(--space-xs);
+    }
+  </style>
+</head>
+<body>
+  <!-- Include SVG icons -->
+  <div id="svg-icons" style="display: none;"></div>
+  
+  <!-- Accessibility Menu - Fixed Position -->
+  <div class="access-menu" style="position: fixed; top: 20px; right: 20px; z-index: 100;">
+    <button class="btn-icon" id="contrast-toggle" aria-label="Toggle high contrast mode">
+      <svg width="24" height="24" aria-hidden="true">
+        <use href="#icon-contrast"></use>
+      </svg>
+    </button>
+  </div>
+  
+  <div id="app" class="container">
+    <!-- Navigation -->
+    <nav class="nav-container" style="border-radius: var(--border-radius-md); margin-bottom: var(--space-lg);">
+      <div class="nav-logo">Digital Canvas Studio</div>
+      <div class="nav-items">
+        <a href="#" class="nav-item active" id="nav-home">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-home"></use>
+          </svg>
+          Home
+        </a>
+        <a href="#" class="nav-item" id="nav-canvas">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-canvas"></use>
+          </svg>
+          Canvas
+        </a>
+        <a href="#" class="nav-item" id="nav-gallery">
+          <svg class="nav-icon" aria-hidden="true">
+            <use href="#icon-gallery"></use>
+          </svg>
+          Gallery
+        </a>
+      </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main>
+      <!-- Home View -->
+      <div id="home-view">
+        <!-- Hero Section with Scroll Animation -->
+        <section class="hero-enhanced">
+          <div class="parallax-background"></div>
+          <div class="scroll-container">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="hero-content">
+                    <div class="time-greeting scroll-item stagger-item">Good afternoon, Alice</div>
+                    <h1 class="hero-title scroll-item stagger-item">Welcome to <span class="highlight">Digital Canvas Studio</span></h1>
+                    <p class="welcome-message scroll-item stagger-item">Create, explore, and express yourself through art</p>
+                    <button class="btn btn-primary btn-large animate-pulse scroll-item stagger-item">Start Creating</button>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="hero-canvas scroll-item">
+                    <div style="width: 100%; height: 100%; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%2240%22 fill=%22%23F8CECC%22/><rect width=%22100%22 height=%2260%22 y=%2240%22 fill=%22%2392C5DE%22/><circle cx=%2275%22 cy=%2220%22 r=%2210%22 fill=%22%23FFEB3B%22/></svg>'); background-size: cover;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Music Player -->
+        <div class="music-player">
+          <div class="music-info">
+            <div class="music-title">Calming Piano Melodies</div>
+            <div class="music-category">Recommended for your afternoon session</div>
+          </div>
+          <div class="music-controls">
+            <button class="btn-icon" aria-label="Play music">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-play"></use>
+              </svg>
+            </button>
+            <button class="btn-icon" aria-label="Adjust volume">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-volume"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Feature Cards with Animations -->
+        <div class="feature-cards">
+          <div class="card feature-card card-interactive scroll-item" id="create-art-card">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-canvas"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">Create Art</h3>
+              <p class="feature-description">Express yourself through our specially designed digital canvas with tools that adapt to your needs.</p>
+              <button class="btn btn-primary" id="create-art-btn">Start Creating</button>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="card feature-card card-interactive scroll-item" id="view-gallery-card" style="transition-delay: 0.15s;">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-gallery"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">View Gallery</h3>
+              <p class="feature-description">See your creative journey through time with our beautifully organized gallery view.</p>
+              <button class="btn btn-primary" id="view-gallery-btn">Open Gallery</button>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="card feature-card card-interactive scroll-item" id="guided-mode-card" style="transition-delay: 0.3s;">
+            <svg class="feature-icon" aria-hidden="true">
+              <use href="#icon-guided"></use>
+            </svg>
+            <div class="feature-content">
+              <h3 class="feature-title">Guided Creation</h3>
+              <p class="feature-description">Follow step-by-step guidance to create beautiful art with supportive instruction.</p>
+              <button class="btn btn-primary" id="guided-mode-btn">Try Guided Mode</button>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <section>
+          <h2>Continue where you left off</h2>
+          
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">May 10</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">May 12</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">May 15</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-node"></div>
+              <div class="timeline-label">Today</div>
+            </div>
+          </div>
+          
+          <div class="gallery-grid" style="margin-top: var(--space-lg);">
+            <div class="gallery-item">
+              <div style="height: 180px; background-color: var(--calm-blue); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Ocean Sunset</div>
+                <div class="gallery-date">Started today</div>
+              </div>
+            </div>
+            
+            <div class="gallery-item">
+              <div style="height: 180px; background-color: var(--nostalgic-cream); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Spring Garden</div>
+                <div class="gallery-date">May 15, 2023</div>
+              </div>
+            </div>
+            
+            <div class="gallery-item">
+              <div style="height: 180px; background-color: var(--energetic-yellow); border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;"></div>
+              <div class="gallery-info">
+                <div class="gallery-title">Sunny Day</div>
+                <div class="gallery-date">May 12, 2023</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Canvas View -->
+      <div id="canvas-view" style="display: none;">
+        <div class="breadcrumb">
+          <a href="#" class="breadcrumb-item" id="back-to-home">Home</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item active">Canvas</span>
+        </div>
+        
+        <h2>Create Your Artwork</h2>
+        
+        <!-- Tool Palette and Canvas -->
+        <div class="flex gap-lg" style="margin-top: var(--space-lg);">
+          <!-- Tool sections similar to enhanced-preview.html -->
+        </div>
+      </div>
+
+      <!-- Gallery View -->
+      <div id="gallery-view" style="display: none;">
+        <div class="breadcrumb">
+          <a href="#" class="breadcrumb-item" id="gallery-back-home">Home</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item active">Gallery</span>
+        </div>
+        
+        <div class="flex justify-between items-center">
+          <h2>Your Artwork Gallery</h2>
+          <div class="flex gap-sm">
+            <button class="btn-icon" id="grid-view-btn" title="Grid View">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-gallery"></use>
+              </svg>
+            </button>
+            <button class="btn-icon" id="timeline-view-btn" title="Timeline View">
+              <svg width="24" height="24" aria-hidden="true">
+                <use href="#icon-gallery"></use>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Gallery content similar to enhanced-preview.html -->
+      </div>
+
+      <!-- Guided Creation View -->
+      <div id="guided-creation" style="display: none;">
+        <div class="breadcrumb">
+          <a href="#" class="breadcrumb-item" id="guided-back-home">Home</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item active">Guided Creation</span>
+        </div>
+        
+        <h2>Step-by-Step Guided Creation</h2>
+        
+        <!-- Guided creation content similar to enhanced-preview.html -->
+      </div>
+    </main>
+    
+    <footer style="margin-top: var(--space-xxl); padding: var(--space-lg) 0; border-top: 1px solid var(--neutral-300);">
+      <div class="flex justify-between items-center">
+        <div>
+          <p style="margin-bottom: var(--space-xs);">Digital Canvas Studio</p>
+          <p style="color: var(--neutral-700); font-size: var(--font-size-sm);">Art Therapy Platform for Dementia Patients</p>
+        </div>
+        <div>
+          <button class="btn-icon" aria-label="Get help">
+            <svg width="24" height="24" aria-hidden="true">
+              <use href="#icon-help"></use>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Load SVG icons
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('src/icons.svg')
+        .then(response => response.text())
+        .then(svg => {
+          document.getElementById('svg-icons').innerHTML = svg;
+        })
+        .catch(error => {
+          console.error('Error loading SVG icons:', error);
+        });
+      
+      // Set time-based greeting
+      const hour = new Date().getHours();
+      const greetingElement = document.querySelector('.time-greeting');
+      let greeting = 'Good morning';
+      
+      if (hour >= 12 && hour < 17) {
+        greeting = 'Good afternoon';
+      } else if (hour >= 17) {
+        greeting = 'Good evening';
+      }
+      
+      if (greetingElement) {
+        greetingElement.textContent = `${greeting}, Alice`;
+      }
+      
+      // Initialize Canvas when the DOM is loaded
+      initializeCanvas();
+      
+      // Add all scroll animation items as visible for initial animation
+      setTimeout(() => {
+        document.querySelectorAll('.scroll-item').forEach(item => {
+          item.classList.add('visible');
+        });
+      }, 300);
+      
+      // Initialize scroll animations
+      initScrollAnimations();
+      
+      // Initialize card hover effects
+      initCardHoverEffects();
+    });
+    
+    // High Contrast Toggle
+    const contrastToggle = document.getElementById('contrast-toggle');
+    const app = document.getElementById('app');
+    
+    contrastToggle.addEventListener('click', function() {
+      document.body.classList.toggle('high-contrast');
+      app.classList.toggle('high-contrast');
+    });
+
+    // View Switching
+    const homeView = document.getElementById('home-view');
+    const canvasView = document.getElementById('canvas-view');
+    const galleryView = document.getElementById('gallery-view');
+    const guidedCreationView = document.getElementById('guided-creation');
+    
+    function showView(viewElement) {
+      // Hide all views
+      homeView.style.display = 'none';
+      canvasView.style.display = 'none';
+      galleryView.style.display = 'none';
+      guidedCreationView.style.display = 'none';
+      
+      // Show the selected view with a fade-in animation
+      viewElement.style.display = 'block';
+      viewElement.classList.add('animate-fade-in');
+      
+      // Update active nav item
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Set the correct nav item as active
+      if (viewElement === homeView) {
+        document.querySelector('#nav-home').classList.add('active');
+      } else if (viewElement === canvasView) {
+        document.querySelector('#nav-canvas').classList.add('active');
+        // Re-init canvas if needed
+        if (canvasView.style.display !== 'none') {
+          resizeCanvas();
+        }
+      } else if (viewElement === galleryView) {
+        document.querySelector('#nav-gallery').classList.add('active');
+      }
+    }
+    
+    // Create Art card and button
+    const createArtCard = document.getElementById('create-art-card');
+    const createArtBtn = document.getElementById('create-art-btn');
+    if (createArtCard) {
+      createArtCard.addEventListener('click', function() {
+        showView(canvasView);
+      });
+    }
+    if (createArtBtn) {
+      createArtBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showView(canvasView);
+      });
+    }
+    
+    // Main page "Start Creating" button
+    const mainCreateBtn = document.querySelector('.hero-content .btn-primary');
+    if (mainCreateBtn) {
+      mainCreateBtn.addEventListener('click', function() {
+        showView(canvasView);
+      });
+    }
+    
+    // Back to home button
+    const backToHomeBtn = document.getElementById('back-to-home');
+    if (backToHomeBtn) {
+      backToHomeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(homeView);
+      });
+    }
+    
+    // Gallery back to home button
+    const galleryBackHomeBtn = document.getElementById('gallery-back-home');
+    if (galleryBackHomeBtn) {
+      galleryBackHomeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(homeView);
+      });
+    }
+    
+    // Guided back to home button
+    const guidedBackHomeBtn = document.getElementById('guided-back-home');
+    if (guidedBackHomeBtn) {
+      guidedBackHomeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(homeView);
+      });
+    }
+    
+    // Navigation menu links
+    const navHome = document.getElementById('nav-home');
+    const navCanvas = document.getElementById('nav-canvas');
+    const navGallery = document.getElementById('nav-gallery');
+    
+    if (navHome) {
+      navHome.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(homeView);
+      });
+    }
+    
+    if (navCanvas) {
+      navCanvas.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(canvasView);
+      });
+    }
+    
+    if (navGallery) {
+      navGallery.addEventListener('click', function(e) {
+        e.preventDefault();
+        showView(galleryView);
+        loadGalleryItems();
+      });
+    }
+    
+    // View Gallery card and button
+    const viewGalleryCard = document.getElementById('view-gallery-card');
+    const viewGalleryBtn = document.getElementById('view-gallery-btn');
+    if (viewGalleryCard) {
+      viewGalleryCard.addEventListener('click', function() {
+        showView(galleryView);
+        loadGalleryItems();
+      });
+    }
+    if (viewGalleryBtn) {
+      viewGalleryBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showView(galleryView);
+        loadGalleryItems();
+      });
+    }
+    
+    // Guided mode button and card
+    const guidedModeCard = document.getElementById('guided-mode-card');
+    const guidedModeBtn = document.getElementById('guided-mode-btn');
+    if (guidedModeCard) {
+      guidedModeCard.addEventListener('click', function() {
+        showView(guidedCreationView);
+      });
+    }
+    if (guidedModeBtn) {
+      guidedModeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showView(guidedCreationView);
+      });
+    }
+    
+    // Initialize Canvas (placeholder function)
+    function initializeCanvas() {
+      // This would be implemented fully in a complete version
+      console.log('Canvas initialized');
+    }
+    
+    // Function to handle resizing canvas
+    function resizeCanvas() {
+      // This would be implemented fully in a complete version
+      console.log('Canvas resized');
+    }
+    
+    // Function to load gallery items
+    function loadGalleryItems() {
+      // This would be implemented fully with localStorage in a complete version
+      console.log('Loading gallery items');
+    }
+    
+    // Scroll Animation Functionality
+    function initScrollAnimations() {
+      // Initialize all scroll items to be animated on load
+      const scrollItems = document.querySelectorAll('.scroll-item');
+      
+      // Make items visible when they appear in viewport
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            // Once animation is done, unobserve it
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1 // Trigger when at least 10% of the element is visible
+      });
+      
+      // Observe all scroll items
+      scrollItems.forEach(item => {
+        observer.observe(item);
+      });
+
+      // Parallax effect on scroll
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const parallaxBg = document.querySelector('.parallax-background');
+        
+        if (parallaxBg) {
+          // Move background at a different rate for parallax effect
+          parallaxBg.style.transform = `translateZ(-10px) scale(2) translateY(${scrollTop * 0.15}px)`;
+        }
+        
+        // Get all staggered items for additional effects
+        const staggerItems = document.querySelectorAll('.stagger-item');
+        staggerItems.forEach((item, index) => {
+          const delay = index * 0.05;
+          const translateY = scrollTop * 0.03 * (index + 1);
+          item.style.transform = `translateY(${-translateY}px)`;
+        });
+      });
+      
+      // Animate hero canvas on mouse move for 3D effect
+      const heroCanvas = document.querySelector('.hero-canvas');
+      if (heroCanvas) {
+        document.addEventListener('mousemove', (e) => {
+          const mouseX = e.clientX / window.innerWidth - 0.5;
+          const mouseY = e.clientY / window.innerHeight - 0.5;
+          
+          heroCanvas.style.transform = `translateZ(0) rotateX(${mouseY * 5}deg) rotateY(${mouseX * -5}deg) scale(0.98)`;
+        });
+      }
+    }
+    
+    // Add interactive hover effect to cards
+    function initCardHoverEffects() {
+      const cards = document.querySelectorAll('.feature-card');
+      
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          // Get position of mouse relative to card
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          // Set CSS variables for the radial gradient position
+          const hoverEffect = card.querySelector('.card-hover-effect');
+          if (hoverEffect) {
+            hoverEffect.style.setProperty('--x', `${(x / rect.width) * 100}%`);
+            hoverEffect.style.setProperty('--y', `${(y / rect.height) * 100}%`);
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html> 
